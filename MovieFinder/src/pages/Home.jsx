@@ -4,6 +4,8 @@ import '../css/Home.css'
 
 import { searchMovies , getPopularMovies } from "../services/api";
 
+
+
 const Home = () => {
 
 
@@ -29,10 +31,23 @@ const Home = () => {
         loadPopularMovies()
     },[])
 
-    const handleSearch = (e)=>{
+    const handleSearch = async (e)=>{
         e.preventDefault()
 
-        if(!)
+        if(!searchQuery.trim()) return
+        if(loading ) return
+
+        setLoading(true)
+        try {
+            const searchResults = await searchMovies(searchQuery)
+            setMovies(searchResults)
+            setError(null)
+        } catch (error) {
+            console.log(err)
+            setError('Failed to search movies....')
+        }finally{
+            setLoading(false)
+        }
         setSearchQuery('')
     }       
 
